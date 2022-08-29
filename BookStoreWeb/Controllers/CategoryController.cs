@@ -74,5 +74,36 @@ namespace BookStoreWeb.Controllers
             }
             return View(obj);
         }
+        //GET
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            //3 ways to retrieve a category from DB
+            var categoryFromDb = _db.Categories.Find(id);
+            //var CategoryFromDbFirst = _db.Categories.FirstOrDefault(x => x.Id == id);
+            //var CategoryFromDbSingle = _db.Categories.SingleOrDefault(x => x.Id == id);
+            if (categoryFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(categoryFromDb);
+        }
+        //POST
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePOST(int? id)
+        {
+            var obj = _db.Categories.Find(id);
+            if(obj == null)
+            { 
+                return NotFound();
+            }
+                _db.Categories.Remove(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+        }
     }
 }

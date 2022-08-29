@@ -1,6 +1,7 @@
 ﻿using BookStoreWeb.Data;
 using BookStoreWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BookStoreWeb.Controllers
 {
@@ -27,6 +28,10 @@ namespace BookStoreWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category obj)
         {
+            if(obj.Name == obj.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name","The DisplayOrder cannot match the Name.");
+            }
             if (ModelState.IsValid)
             { 
             _db.Categories.Add(obj);

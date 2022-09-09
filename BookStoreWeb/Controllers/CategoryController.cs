@@ -8,14 +8,14 @@ namespace BookStoreWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _db;
-        public CategoryController(ICategoryRepository db)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _db = db;  
+            _unitOfWork = unitOfWork;  
         }
         public IActionResult Index()
         {
-            IEnumerable<Category> objCategoryList= _db.GetAll();
+            IEnumerable<Category> objCategoryList= _unitOfWork.Category.GetAll();
             return View(objCategoryList);
         }
         //GET
@@ -35,8 +35,8 @@ namespace BookStoreWeb.Controllers
             }
             if (ModelState.IsValid)
             { 
-            _db.Add(obj);
-            _db.Save();
+            _unitOfWork.Category.Add(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category successfully created!";
             return RedirectToAction("Index");
             }
@@ -51,7 +51,7 @@ namespace BookStoreWeb.Controllers
             }
             //3 ways to retrieve a category from DB
             //var categoryFromDb=_db.Categories.Find(id);
-            var CategoryFromDbFirst = _db.GetFirstOrDefault(x => x.Id == id);
+            var CategoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             //var CategoryFromDbSingle = _db.Categories.SingleOrDefault(x => x.Id == id);
             if(CategoryFromDbFirst == null)
             {
@@ -70,8 +70,8 @@ namespace BookStoreWeb.Controllers
             }
             if (ModelState.IsValid)
             {
-                _db.Update(obj);
-                _db.Save();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category successfully edited!";
                 return RedirectToAction("Index");
             }
@@ -86,7 +86,7 @@ namespace BookStoreWeb.Controllers
             }
             //3 ways to retrieve a category from DB
             //var categoryFromDb = _db.Categories.Find(id);
-            var CategoryFromDbFirst = _db.GetFirstOrDefault(x => x.Id == id);
+            var CategoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             //var CategoryFromDbSingle = _db.Categories.SingleOrDefault(x => x.Id == id);
             if (CategoryFromDbFirst == null)
             {
@@ -99,13 +99,13 @@ namespace BookStoreWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(int? id)
         {
-            var obj = _db.GetFirstOrDefault(x => x.Id == id);
+            var obj = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             if (obj == null)
             { 
                 return NotFound();
             }
-                _db.Remove(obj);
-                _db.Save();
+                _unitOfWork.Category.Remove(obj);
+                _unitOfWork.Save();
             TempData["success"] = "Category successfully deleted!";
             return RedirectToAction("Index");
         }

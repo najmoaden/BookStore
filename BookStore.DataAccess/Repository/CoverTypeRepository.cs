@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace BookStore.DataAccess.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICoverTypeRepository
+    public class CoverTypeRepository : Repository<CoverType>, ICoverTypeRepository
 
     {
         private readonly ApplicationDbContext _db;
-        public CategoryRepository(ApplicationDbContext db) : base(db)
+        public CoverTypeRepository(ApplicationDbContext db) : base(db)
         {
                 _db = db;
         }
 
-        public void Update(Category obj)
+        public void Update(CoverType obj)
         {
-            _db.Categories.Update(obj);
+            _db.CoverTypes.Update(obj);
         }
     }
 }

@@ -49,14 +49,14 @@ namespace BookStoreWeb.Controllers
                 return NotFound();
             }
             //3 ways to retrieve a category from DB
-            var categoryFromDb=_db.Categories.Find(id);
-            //var CategoryFromDbFirst = _db.Categories.FirstOrDefault(x => x.Id == id);
+            //var categoryFromDb=_db.Categories.Find(id);
+            var CategoryFromDbFirst = _db.Categories.FirstOrDefault(x => x.Name == "id");
             //var CategoryFromDbSingle = _db.Categories.SingleOrDefault(x => x.Id == id);
-            if(categoryFromDb == null)
+            if(CategoryFromDbFirst == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(CategoryFromDbFirst);
         }
         //POST
         [HttpPost]

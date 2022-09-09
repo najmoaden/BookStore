@@ -1,4 +1,5 @@
 ﻿using BookStore.DataAccess.Repository.IRepository;
+using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace BookStore.DataAccess.Repository
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
-            query.Where(filter);
+            query = query.Where(filter);
             return query.FirstOrDefault();
         }
 
